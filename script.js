@@ -405,9 +405,21 @@ window.addEventListener('load', function() {
 
 // Luxury custom cursor
 (function initCustomCursor() {
-    const dot = document.querySelector('.cursor-dot');
-    const ring = document.querySelector('.cursor-ring');
-    if (!dot || !ring) return;
+    try {
+        let dot = document.querySelector('.cursor-dot');
+        let ring = document.querySelector('.cursor-ring');
+        if (!dot) {
+            dot = document.createElement('div');
+            dot.className = 'cursor-dot';
+            dot.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(dot);
+        }
+        if (!ring) {
+            ring = document.createElement('div');
+            ring.className = 'cursor-ring';
+            ring.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(ring);
+        }
 
     let mouseX = 0, mouseY = 0;
     let ringX = 0, ringY = 0;
@@ -452,10 +464,13 @@ window.addEventListener('load', function() {
         }
     });
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseenter', onMouseEnter);
-    window.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseenter', onMouseEnter, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave, { passive: true });
     animate();
+    } catch (err) {
+        console.error('Custom cursor init failed:', err);
+    }
 })();
 
 // Performance optimization: Debounce scroll events
