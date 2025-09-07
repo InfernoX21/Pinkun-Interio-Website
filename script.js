@@ -417,15 +417,17 @@ window.addEventListener('load', function() {
         mouseX = e.clientX;
         mouseY = e.clientY;
 
-        // dot follows directly
-        dot.style.transform = `translate3d(${mouseX - 0.5}px, ${mouseY - 0.5}px, 0)`;
+        // dot follows directly (keep CSS translate(-50%, -50%) centering)
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
         document.body.classList.add('cursor-visible');
     }
 
     function animate() {
         ringX += (mouseX - ringX) * ringLerpFactor;
         ringY += (mouseY - ringY) * ringLerpFactor;
-        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
         requestAnimationFrame(animate);
     }
 
