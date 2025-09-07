@@ -404,74 +404,7 @@ window.addEventListener('load', function() {
 });
 
 // Luxury custom cursor
-(function initCustomCursor() {
-    try {
-        let dot = document.querySelector('.cursor-dot');
-        let ring = document.querySelector('.cursor-ring');
-        if (!dot) {
-            dot = document.createElement('div');
-            dot.className = 'cursor-dot';
-            dot.setAttribute('aria-hidden', 'true');
-            document.body.appendChild(dot);
-        }
-        if (!ring) {
-            ring = document.createElement('div');
-            ring.className = 'cursor-ring';
-            ring.setAttribute('aria-hidden', 'true');
-            document.body.appendChild(ring);
-        }
-
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
-    const ringLerpFactor = 0.35; // faster catch-up for lower latency
-
-    function onMouseMove(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-
-        // dot follows directly (keep CSS translate(-50%, -50%) centering)
-        dot.style.left = mouseX + 'px';
-        dot.style.top = mouseY + 'px';
-        document.body.classList.add('cursor-visible');
-    }
-
-    function animate() {
-        ringX += (mouseX - ringX) * ringLerpFactor;
-        ringY += (mouseY - ringY) * ringLerpFactor;
-        ring.style.left = ringX + 'px';
-        ring.style.top = ringY + 'px';
-        requestAnimationFrame(animate);
-    }
-
-    function onMouseEnter() {
-        document.body.classList.add('cursor-visible');
-    }
-
-    function onMouseLeave() {
-        document.body.classList.remove('cursor-visible');
-    }
-
-    // Enlarge ring over interactive elements
-    const interactiveSelectors = 'a, button, .service-cta, .portfolio-item, input, select, textarea';
-    document.addEventListener('mouseover', (e) => {
-        if (e.target.closest(interactiveSelectors)) {
-            document.body.classList.add('cursor-hover');
-        }
-    });
-    document.addEventListener('mouseout', (e) => {
-        if (e.target.closest(interactiveSelectors)) {
-            document.body.classList.remove('cursor-hover');
-        }
-    });
-
-    document.addEventListener('mousemove', onMouseMove, { passive: true });
-    document.addEventListener('mouseenter', onMouseEnter, { passive: true });
-    document.addEventListener('mouseleave', onMouseLeave, { passive: true });
-    animate();
-    } catch (err) {
-        console.error('Custom cursor init failed:', err);
-    }
-})();
+// custom cursor removed
 
 // Performance optimization: Debounce scroll events
 function debounce(func, wait) {
