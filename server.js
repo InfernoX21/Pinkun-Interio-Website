@@ -9,8 +9,22 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+// CORS: allow local dev and production domain
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5000",
+  "http://localhost:5001",
+  process.env.CLIENT_ORIGIN
+].filter(Boolean);
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5001"],
+  origin: function(origin, callback) {
+    // allow REST tools and same-origin
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS: ' + origin));
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
