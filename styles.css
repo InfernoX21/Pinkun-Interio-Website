@@ -36,6 +36,62 @@ body {
     overflow-x: hidden;
 }
 
+/* Luxury Custom Cursor */
+body {
+    cursor: none;
+}
+
+.cursor-dot,
+.cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 3000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    will-change: transform, opacity;
+}
+
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brushed-gold);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    transform: translate(-50%, -50%);
+}
+
+.cursor-ring {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1), 0 0 20px rgba(212, 175, 55, 0.15);
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease, height 0.15s ease, border-color 0.15s ease; /* remove transform transition to avoid lag */
+}
+
+.cursor-visible .cursor-dot,
+.cursor-visible .cursor-ring {
+    opacity: 1;
+}
+
+/* Hover states over interactive elements */
+a:hover ~ .cursor-ring,
+button:hover ~ .cursor-ring,
+.service-cta:hover ~ .cursor-ring,
+.portfolio-item:hover ~ .cursor-ring {
+    border-color: var(--white);
+}
+
+.cursor-hover .cursor-ring {
+    width: 56px;
+    height: 56px;
+    border-color: var(--white);
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.08), 0 0 25px rgba(212, 175, 55, 0.25);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
