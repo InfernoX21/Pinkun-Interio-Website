@@ -124,7 +124,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
   const message = document.querySelector("#message").value;
 
   try {
-    const response = await fetch("http://localhost:5001/contact", {
+    const response = await fetch("/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, phone, message }),
@@ -279,7 +279,7 @@ if (contactForm) {
         submitBtn.disabled = true;
 
         try {
-            const response = await fetch("http://localhost:5001/contact", {
+            const response = await fetch("/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, phone, message }),
@@ -402,6 +402,59 @@ window.addEventListener('load', function() {
         }, index * 100);
     });
 });
+
+// Luxury custom cursor
+(function initCustomCursor() {
+    const dot = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    if (!dot || !ring) return;
+
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+    const ringLerpFactor = 0.35; // faster catch-up for lower latency
+
+    function onMouseMove(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        // dot follows directly
+        dot.style.transform = `translate3d(${mouseX - 0.5}px, ${mouseY - 0.5}px, 0)`;
+        document.body.classList.add('cursor-visible');
+    }
+
+    function animate() {
+        ringX += (mouseX - ringX) * ringLerpFactor;
+        ringY += (mouseY - ringY) * ringLerpFactor;
+        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+        requestAnimationFrame(animate);
+    }
+
+    function onMouseEnter() {
+        document.body.classList.add('cursor-visible');
+    }
+
+    function onMouseLeave() {
+        document.body.classList.remove('cursor-visible');
+    }
+
+    // Enlarge ring over interactive elements
+    const interactiveSelectors = 'a, button, .service-cta, .portfolio-item, input, select, textarea';
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(interactiveSelectors)) {
+            document.body.classList.add('cursor-hover');
+        }
+    });
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(interactiveSelectors)) {
+            document.body.classList.remove('cursor-hover');
+        }
+    });
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseenter', onMouseEnter);
+    window.addEventListener('mouseleave', onMouseLeave);
+    animate();
+})();
 
 // Performance optimization: Debounce scroll events
 function debounce(func, wait) {
